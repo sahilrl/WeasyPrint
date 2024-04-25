@@ -131,7 +131,7 @@ def border_radius(name, tokens, base_url):
     vertical = []
     for token in tokens:
         if token.type == 'literal' and token.value == '/':
-            if current is horizontal:
+            if current == horizontal:
                 if token == tokens[-1]:
                     raise InvalidValues('Expected value after "/" separator')
                 else:

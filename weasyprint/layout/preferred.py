@@ -305,7 +305,7 @@ def inline_line_widths(context, box, outer, is_line_start, minimum,
                 max_width = 0 if minimum else None
                 lines = []
                 resume_index = new_resume_index = 0
-                while new_resume_index is not None:
+                while new_resume_index != None:
                     resume_index += new_resume_index
                     _, _, new_resume_index, width, _, _ = (
                         split_first_line(
@@ -744,7 +744,7 @@ def trailing_whitespace_size(context, box):
         return 0
     if stripped_text:
         resume = 0
-        while resume is not None:
+        while resume != None:
             old_resume = resume
             old_box, resume, _ = split_text_box(context, box, None, resume)
         assert old_box
@@ -755,7 +755,7 @@ def trailing_whitespace_size(context, box):
             # old_box split just before the trailing spaces
             return old_box.width
         else:
-            assert resume is None
+            assert resume == None
             return old_box.width - stripped_box.width
     else:
         _, _, _, width, _, _ = split_first_line(
