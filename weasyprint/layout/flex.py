@@ -693,7 +693,7 @@ def flex_layout(context, box, bottom_space, skip_stack, containing_block,
             cross_margins = (
                 (child.margin_top, child.margin_bottom) if cross == 'height'
                 else (child.margin_left, child.margin_right))
-            auto_margins = sum([margin == 'auto' for margin in cross_margins])
+            auto_margins = sum(margin == 'auto' for margin in cross_margins)
             if auto_margins:
                 extra_cross = line.cross_size
                 if cross == 'height':
