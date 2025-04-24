@@ -17,6 +17,7 @@ from .matrix import Matrix
 from .stacking import StackingContext
 from .text.ffi import ffi, harfbuzz, pango, units_from_double, units_to_double
 from .text.line_break import get_last_word_end
+import defusedxml.ElementTree
 
 SIDES = ('top', 'right', 'bottom', 'left')
 
@@ -303,7 +304,7 @@ def draw_background(stream, bg, clip_box=True, bleed=None, marks=()):
                     translate({width},0) scale(0.5) translate(0,{height})" />
                 '''
             svg += '</svg>'
-            tree = ElementTree.fromstring(svg)
+            tree = defusedxml.ElementTree.fromstring(svg)
             image = SVGImage(tree, None, None, stream)
             # Painting area is the PDF media box
             size = (width, height)
@@ -1216,7 +1217,7 @@ def draw_first_line(stream, textbox, text_overflow, block_ellipsis, matrix):
                     svg_data = ffi.unpack(hb_data, int(stream.length[0]))
                     # Do as explained in specification
                     # https://learn.microsoft.com/typography/opentype/spec/svg
-                    tree = ElementTree.fromstring(svg_data)
+                    tree = defusedxml.ElementTree.fromstring(svg_data)
                     defs = ElementTree.Element('defs')
                     for child in list(tree):
                         defs.append(child)

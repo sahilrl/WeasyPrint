@@ -10,7 +10,6 @@ from math import inf
 from pathlib import Path
 from urllib.parse import urlparse
 from urllib.request import url2pathname
-from xml.etree import ElementTree
 
 import pydyf
 from PIL import Image, ImageFile, ImageOps
@@ -20,6 +19,7 @@ from .layout.percent import percentage
 from .logger import LOGGER
 from .svg import SVG
 from .urls import URLFetchingError, fetch
+import defusedxml.ElementTree
 
 # Don’t crash when converting truncated images
 ImageFile.LOAD_TRUNCATED_IMAGES = True
@@ -302,7 +302,7 @@ def get_image_from_uri(cache, url_fetcher, options, url, forced_mime_type=None,
         # Try to rely on given mimetype for SVG
         if mime_type == 'image/svg+xml':
             try:
-                tree = ElementTree.fromstring(string)
+                tree = defusedxml.ElementTree.fromstring(string)
                 image = SVGImage(tree, url, url_fetcher, context)
             except Exception as svg_exception:
                 svg_exceptions.append(svg_exception)
@@ -316,7 +316,7 @@ def get_image_from_uri(cache, url_fetcher, options, url, forced_mime_type=None,
                     raise ImageLoadingError.from_exception(svg_exceptions[0])
                 try:
                     # Last chance, try SVG
-                    tree = ElementTree.fromstring(string)
+                    tree = defusedxml.ElementTree.fromstring(string)
                     image = SVGImage(tree, url, url_fetcher, context)
                 except Exception:
                     # Tried Pillow then SVGImage for a raster, abort
